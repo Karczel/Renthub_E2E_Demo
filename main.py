@@ -20,7 +20,7 @@ from temp_data import generate_unique_username, generate_email_from_username, ge
 
 def go_website():
     driver.get(BASE_URL)
-    time.sleep(10)  # Pause for presentation
+    time.sleep(5)  # Pause for presentation
 
 
 def choose_room_type():
@@ -29,16 +29,13 @@ def choose_room_type():
     )
     ActionChains(driver).move_to_element(button).perform()
     button.click()
-    time.sleep(2)
+    time.sleep(3)
     try:
         alert_message = driver.find_element(By.XPATH, "//p[contains(text(), 'No rooms available of this type')]")
-        time.sleep(2)
+        time.sleep(3)
         if alert_message.is_displayed():
-            # Go back to the previous page
             driver.back()
-
-            # Wait for the page to load and find the next carousel item
-            time.sleep(2)  # Adjust time as needed
+            time.sleep(1)
 
             driver.execute_script(
                 "$('#carouselExample').carousel('next');"
@@ -49,6 +46,7 @@ def choose_room_type():
             )
             ActionChains(driver).move_to_element(button).perform()
             next_button.click()
+            time.sleep(3)
     except:
         pass
 
@@ -56,25 +54,27 @@ def choose_room_type():
 def choose_room():
     view_details_button = driver.find_element(By.CSS_SELECTOR, ".custom-card .btn.btn-primary")
     view_details_button.click()
-    time.sleep(2)
+    time.sleep(3)
 
 
 def rent():
     proceed_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-bs-target='#exampleModalLong']")))
     ActionChains(driver).move_to_element(proceed_button).perform()
+    time.sleep(3)
     proceed_button.click()
-    time.sleep(2)
     checkbox = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "agreeTerms")))
     ActionChains(driver).move_to_element(checkbox).perform()
+    time.sleep(2)
     checkbox.click()
     confirm_button = driver.find_element(By.ID, "confirmAgreement")
+    time.sleep(2)
     confirm_button.click()
     time.sleep(2)
 
 
-def sign_up(username, email, password, phone_number, first_name, last_name,thai_citizenship_id, temp_image):
+def sign_up(username, email, password, phone_number, first_name, last_name, thai_citizenship_id, temp_image):
     sign_up_link = driver.find_element(By.LINK_TEXT, "Sign-up")
     sign_up_link.click()
     time.sleep(2)
@@ -92,19 +92,20 @@ def sign_up(username, email, password, phone_number, first_name, last_name,thai_
         ActionChains(driver).move_to_element(num_block).perform()
         num_block.send_keys(thai_citizenship_id[i])
 
-    image=driver.find_element(By.ID, 'id_thai_citizenship_id_image')
+    image = driver.find_element(By.ID, 'id_thai_citizenship_id_image')
     ActionChains(driver).move_to_element(image).perform()
     image.send_keys(temp_image)
 
     sign_up_button = driver.find_element(By.XPATH, "//button[text()='Sign Up']")
     ActionChains(driver).move_to_element(sign_up_button).perform()
     sign_up_button.click()
-
     time.sleep(3)
+
     WebDriverWait(driver, 10).until(EC.alert_is_present())  # Wait for the alert
     alert = Alert(driver)  # Switch to the alert
     alert.accept()
     time.sleep(3)
+
     driver.find_element(By.XPATH, "//button[text()='Sign Up']").click()
     time.sleep(3)
 
@@ -115,8 +116,7 @@ if __name__ == "__main__":
 
     try:
         # -r requirements.txt
-        # subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
-        time.sleep(5)
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
         # kill port if any
         kill_port()
 
@@ -129,7 +129,6 @@ if __name__ == "__main__":
         # Get data from admin
         admin_login(driver)
         driver.get(f"{BASE_URL}/admin/renthub/rental")
-        time.sleep(5)
 
         usernames_elements = driver.find_elements(By.CSS_SELECTOR, ".username-class")  # Replace with actual selector
         citizenship_ids_elements = driver.find_elements(By.CSS_SELECTOR,
@@ -163,7 +162,7 @@ if __name__ == "__main__":
         rent()
 
         # 5. Sign up
-        sign_up(username, email, password, phone_number, first_name, last_name,thai_citizenship_id, temp_image)
+        sign_up(username, email, password, phone_number, first_name, last_name, thai_citizenship_id, temp_image)
 
         # go back to rent
         choose_room_type()
@@ -177,6 +176,7 @@ if __name__ == "__main__":
         send_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.ID, 'send-button')))
         ActionChains(driver).move_to_element(send_button).perform()
+        time.sleep(3)
 
         send_button.click()
 

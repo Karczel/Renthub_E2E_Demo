@@ -98,9 +98,3 @@ def del_temp_image_file(filename):
     # if created image found, remove it
     if os.path.exists(filename):
         os.remove(filename)
-
-
-def del_temp_renter(user):
-    """Delete renter in admin."""
-    if user:
-        user.delete()
