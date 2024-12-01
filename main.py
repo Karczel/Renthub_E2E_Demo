@@ -29,10 +29,10 @@ def choose_room_type():
     )
     ActionChains(driver).move_to_element(button).perform()
     button.click()
-    time.sleep(3)
+    time.sleep(5)
     try:
         alert_message = driver.find_element(By.XPATH, "//p[contains(text(), 'No rooms available of this type')]")
-        time.sleep(3)
+        time.sleep(5)
         if alert_message.is_displayed():
             driver.back()
             time.sleep(1)
@@ -46,7 +46,7 @@ def choose_room_type():
             )
             ActionChains(driver).move_to_element(button).perform()
             next_button.click()
-            time.sleep(3)
+            time.sleep(5)
     except:
         pass
 
@@ -54,30 +54,30 @@ def choose_room_type():
 def choose_room():
     view_details_button = driver.find_element(By.CSS_SELECTOR, ".custom-card .btn.btn-primary")
     view_details_button.click()
-    time.sleep(3)
+    time.sleep(5)
 
 
 def rent():
     proceed_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-bs-target='#exampleModalLong']")))
     ActionChains(driver).move_to_element(proceed_button).perform()
-    time.sleep(3)
+    time.sleep(5)
     proceed_button.click()
     checkbox = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "agreeTerms")))
     ActionChains(driver).move_to_element(checkbox).perform()
-    time.sleep(2)
+    time.sleep(5)
     checkbox.click()
     confirm_button = driver.find_element(By.ID, "confirmAgreement")
-    time.sleep(2)
+    time.sleep(5)
     confirm_button.click()
-    time.sleep(2)
+    time.sleep(5)
 
 
 def sign_up(username, email, password, phone_number, first_name, last_name, thai_citizenship_id, temp_image):
     sign_up_link = driver.find_element(By.LINK_TEXT, "Sign-up")
     sign_up_link.click()
-    time.sleep(2)
+    time.sleep(5)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'signupForm')))
     driver.find_element(By.ID, 'id_username').send_keys(username)
     driver.find_element(By.ID, 'id_email').send_keys(email)
@@ -99,15 +99,15 @@ def sign_up(username, email, password, phone_number, first_name, last_name, thai
     sign_up_button = driver.find_element(By.XPATH, "//button[text()='Sign Up']")
     ActionChains(driver).move_to_element(sign_up_button).perform()
     sign_up_button.click()
-    time.sleep(3)
+    time.sleep(5)
 
     WebDriverWait(driver, 10).until(EC.alert_is_present())  # Wait for the alert
     alert = Alert(driver)  # Switch to the alert
     alert.accept()
-    time.sleep(3)
+    time.sleep(5)
 
     driver.find_element(By.XPATH, "//button[text()='Sign Up']").click()
-    time.sleep(3)
+    time.sleep(5)
 
 
 if __name__ == "__main__":
