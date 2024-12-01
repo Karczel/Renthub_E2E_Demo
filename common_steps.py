@@ -30,3 +30,4 @@ def log_in(driver, username, password):
     except Exception as e:
         raise RuntimeError(f"An error occurred during login: {e}")
 
+

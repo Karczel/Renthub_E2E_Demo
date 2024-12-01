@@ -8,3 +8,5 @@ ADMIN_PASSWORD = config('ADMIN_PASSWORD')
 
 DEMO_USERNAME=config('DEMO_USERNAME')
 DEMO_PASSWORD = config('DEMO_PASSWORD')
+
+PROJECT_PATH = config('PROJECT_PATH', default="~/Renthub-Connect")
