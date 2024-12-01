@@ -35,5 +35,5 @@ try:
     # Any additional steps… (after logged in submit a rent submit -> see successful image)
     # Showcase specific features
 finally:
-    # Close the browser
+    # Close the driver
     driver.quit()
