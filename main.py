@@ -32,7 +32,7 @@ def choose_room_type():
     time.sleep(5)
     try:
         alert_message = driver.find_element(By.XPATH, "//p[contains(text(), 'No rooms available of this type')]")
-        time.sleep(5)
+        time.sleep(3)
         if alert_message.is_displayed():
             driver.back()
             time.sleep(1)
@@ -63,21 +63,22 @@ def rent():
     ActionChains(driver).move_to_element(proceed_button).perform()
     time.sleep(5)
     proceed_button.click()
+    time.sleep(3)
     checkbox = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "agreeTerms")))
     ActionChains(driver).move_to_element(checkbox).perform()
-    time.sleep(5)
+    time.sleep(2)
     checkbox.click()
     confirm_button = driver.find_element(By.ID, "confirmAgreement")
     time.sleep(5)
     confirm_button.click()
-    time.sleep(5)
+    time.sleep(7)
 
 
 def sign_up(username, email, password, phone_number, first_name, last_name, thai_citizenship_id, temp_image):
     sign_up_link = driver.find_element(By.LINK_TEXT, "Sign-up")
     sign_up_link.click()
-    time.sleep(5)
+    time.sleep(7)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'signupForm')))
     driver.find_element(By.ID, 'id_username').send_keys(username)
     driver.find_element(By.ID, 'id_email').send_keys(email)
@@ -104,10 +105,26 @@ def sign_up(username, email, password, phone_number, first_name, last_name, thai
     WebDriverWait(driver, 10).until(EC.alert_is_present())  # Wait for the alert
     alert = Alert(driver)  # Switch to the alert
     alert.accept()
-    time.sleep(5)
+    time.sleep(2)
 
     driver.find_element(By.XPATH, "//button[text()='Sign Up']").click()
     time.sleep(5)
+
+
+def start_app():
+    global server_process
+    # -r requirements.txt
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
+    # kill port if any
+    kill_port()
+    # Assume you already cloned Renthub-Connect Project
+    server_process = start_django_server()
+
+
+def stop_app():
+    stop_django_server(server_process)
+    # kill port
+    kill_port()
 
 
 if __name__ == "__main__":
@@ -115,13 +132,7 @@ if __name__ == "__main__":
     # python3 main.py
 
     try:
-        # -r requirements.txt
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
-        # kill port if any
-        kill_port()
-
-        # Assume you already cloned Renthub-Connect Project
-        server_process = start_django_server()
+        # start_app()
 
         # Initialize the WebDriver
         driver = Browser.get_browser()
@@ -176,7 +187,7 @@ if __name__ == "__main__":
         send_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.ID, 'send-button')))
         ActionChains(driver).move_to_element(send_button).perform()
-        time.sleep(3)
+        time.sleep(5)
 
         send_button.click()
 
@@ -185,7 +196,7 @@ if __name__ == "__main__":
         # 7. See My Rentals
         my_rentals_link = driver.find_element(By.XPATH, "//a[@href='/payment/']")
         my_rentals_link.click()
-        time.sleep(3)
+        time.sleep(7)
 
     finally:
         # clean_up
@@ -217,6 +228,4 @@ if __name__ == "__main__":
         # Close the driver
         driver.quit()
 
-        stop_django_server(server_process)
-        # kill port
-        kill_port()
+        # stop_app()
